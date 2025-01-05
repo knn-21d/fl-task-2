@@ -28,7 +28,11 @@
     type="number"
     [formControl]="lengthControl"
   />
-  <button (click)="showUniqueChainsHandler()">
+  <button
+    [disabled]="!grammar"
+    [title]="!grammar ? 'Пожалуйста, сохраните грамматику' : undefined"
+    (click)="showUniqueChainsHandler()"
+  >
     Вычислить уникальные цепочки длинны {{ lengthControl.value }}
   </button>
   @if (uniqueChains().length) {
@@ -45,7 +49,11 @@
   <h2>Задание 2</h2>
   <label>Слово</label>
   <input [formControl]="xChainControl" />
-  <button (click)="getPathsToStringHandler()">
+  <button
+    [disabled]="!grammar"
+    [title]="!grammar ? 'Пожалуйста, сохраните грамматику' : undefined"
+    (click)="getPathsToStringHandler()"
+  >
     Определить конечную сентенциальную форму для слова {{ xChainControl.value }}
   </button>
   @let pathsToStringSignaled = pathsToString();
@@ -83,5 +91,11 @@
     <label>Восходящий график</label>
     <app-treant [data]="upTreeChartData"></app-treant>
   }
-  <button (click)="createCharts()">Сформировать восходящий и нисходящий график</button>
+  <button
+    [disabled]="!grammar"
+    [title]="!grammar ? 'Пожалуйста, сохраните грамматику' : undefined"
+    (click)="createCharts()"
+  >
+    Сформировать восходящий и нисходящий график
+  </button>
 </div>

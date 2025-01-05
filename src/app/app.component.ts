@@ -23,7 +23,7 @@ import { uuidv4 } from '../utils/string';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  private grammar: Grammar | null = null;
+  protected grammar: Grammar | null = null;
 
   protected readonly grammarGroup = new FormGroup({
     startingSymbol: new FormControl<string>('S', { nonNullable: true }),
