@@ -1,0 +1,87 @@
+<div [formGroup]="grammarGroup" class="task-container">
+  <h2>Грамматика</h2>
+  <label>Начальный символ</label>
+  <input [formControl]="grammarGroup.controls.startingSymbol" />
+  <label>Нетерминалы</label>
+  <input
+    [formControl]="grammarGroup.controls.nonTerminalSymbols"
+    placeholder="Формат `[символ] [символ]...`"
+  />
+  <label>Терминалы</label>
+  <input
+    [formControl]="grammarGroup.controls.terminalSymbols"
+    placeholder="Формат `[символ] [символ]...`"
+  />
+  <label>Правила</label>
+  <textarea
+    [formControl]="grammarGroup.controls.rules"
+    placeholder="Формат: [Левая часть правила] -> [вариант замены, вариант замены, вариант замены], правила разделены новой строкой"
+  ></textarea>
+  <button (click)="saveGrammarHandler()">Сохранить</button>
+</div>
+
+<div class="task-container">
+  <h2>Задание 1</h2>
+  <label>Длинна</label>
+  <input
+    placeholder="Введите длинну"
+    type="number"
+    [formControl]="lengthControl"
+  />
+  <button (click)="showUniqueChainsHandler()">
+    Вычислить уникальные цепочки длинны {{ lengthControl.value }}
+  </button>
+  @if (uniqueChains().length) {
+    <label>Уникальные цепочки</label>
+    <div style="display: flex; flex-direction: row; gap: 4px">
+      @for (uniqueChain of uniqueChains(); track uniqueChain) {
+        <span>{{ uniqueChain }}</span>
+      }
+    </div>
+  }
+</div>
+
+<div class="task-container">
+  <h2>Задание 2</h2>
+  <label>Слово</label>
+  <input [formControl]="xChainControl" />
+  <button (click)="getPathsToStringHandler()">
+    Определить конечную сентенциальную форму для слова {{ xChainControl.value }}
+  </button>
+  @let pathsToStringSignaled = pathsToString();
+  @if (pathsToStringSignaled?.length) {
+    @for (path of pathsToStringSignaled; track $index) {
+      <label>Вывод</label>
+      <div class="task-row">
+        @for (chainPath of path.chainPaths; track chainPath) {
+          <span>{{ chainPath }}</span>
+          @if (!$last) {
+            <span>-></span>
+          }
+        }
+      </div>
+      <label>Код левого/правого вывода</label>
+      <div class="task-row">
+        @for (codePath of path.codePaths; track codePath) {
+          <span>{{ codePath }}</span>
+        }
+      </div>
+    }
+  } @else if (pathsToStringSignaled !== null) {
+    Такого слова нет в данном язык
+  }
+</div>
+
+<div class="task-container">
+  <h2>Задание 3</h2>
+  <input [(ngModel)]="treeChartWord" />
+  @if (downTreeChartConfig(); as downTreeChartData) {
+    <label>Нисходящий график</label>
+    <app-treant [data]="downTreeChartData"></app-treant>
+  }
+  @if (upTreeChartConfig(); as upTreeChartData) {
+    <label>Восходящий график</label>
+    <app-treant [data]="upTreeChartData"></app-treant>
+  }
+  <button (click)="createCharts()">Сформировать восходящий и нисходящий график</button>
+</div>
